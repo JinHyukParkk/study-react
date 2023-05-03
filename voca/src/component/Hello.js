@@ -1,9 +1,21 @@
 import World from "./World"
 import styles from "./hello.module.css"
 
+function showName() {
+    console.log("Hyuk");
+}
+
+function showAge(age) {
+    console.log(age);
+}
+
+function showText(e) {
+    console.log(e.target.value);
+}
+
 export default function Hello() {
     return (
-    <div>
+        <div className={styles.box}>
         <h1 style={{
             color : "#f00",
             borderRight : "2px solid #000",
@@ -12,7 +24,13 @@ export default function Hello() {
         }}>
             Hello
             </h1>
-        <div className={styles.box}>hello</div>
+
+        <button onClick={showName}>Show menu</button>
+        <button onClick={() => showAge(30)}>Show age</button>
+
+        <input type="text" onChange={showText} />
+
+        <World />
     </div>
     ); 
 }
