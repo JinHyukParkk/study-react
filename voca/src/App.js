@@ -1,24 +1,27 @@
-import logo from './logo.svg';
 import './App.css';
+import Hello from './component/Hello';
+import Welcome from './component/Welcome';
 
 function App() {
+  const name = "Hyuk"
+
+  const naver = {
+    name: "네이버",
+    url: "https://naver.com"
+  }
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Coding angma</p>
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Welcome />
+      <Hello />
+
+      <h1 style={{
+        color: "blue",
+        backgroundColor: "green"
+      }}>
+        Hello, {name}, <p>{2 + 3}</p>
+      </h1>
+      <a href={naver.url}>{naver.name}</a>
     </div>
   );
 }
