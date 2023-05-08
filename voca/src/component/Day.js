@@ -15,7 +15,7 @@ export default function Day() {
             <tbody>
                 {words.map(word => (
                     <Word word={word} key={word.id} />
-                ))};    
+                ))}    
             </tbody>
         </table>
     </>
