@@ -2,20 +2,11 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 import Word from './Word'; 
+import useFetch from '../hooks/useFetch';
 
 export default function Day() {
     const { day } = useParams();
-    const [words, setWords] = useState([]);
-
-    useEffect(() => {
-        fetch(`http://localhost:3001/words?day=${day}`)
-        .then(res => {
-            return res.json();
-        })
-        .then(data => {
-            setWords(data);
-        });
-    }, [day]);
+    const words = useFetch(`http://localhost:3001/words?day=${day}`);
 
     return (
     <>
