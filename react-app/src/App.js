@@ -1,8 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
+import {useState} from 'react';
 
 function Header(props) {
-  console.log(props);
   return (
     <header>
       <h1><a href="/" onClick={(event) => {
@@ -21,7 +21,7 @@ function Nav(props) {
            return <li key={topic.id}>
               <a id={topic.id} href={"/read/"+topic.id} onClick={event => {
                 event.preventDefault();
-                props.onChangeMode(event.target.id);
+                props.onChangeMode(Number(event.target.id));
               }}>{topic.title}</a>
             </li>
         })}
@@ -40,6 +40,26 @@ function Article(props) {
 }
 
 function App() {
+  const [mode, setMode] = useState('welcome');
+  const [id, setId] = useState(null);
+
+  const topics = [
+    {id:1, title:'html', body:'html is ...'},
+    {id:2, title:'css', body:'css is ...'},
+    {id:3, title:'javascript', body:'javascript is ...'}
+  ];
+
+  let content = null;
+  if (mode === 'welcome') {
+    content = <Article title="Welcome" body="Hello, WEB"></Article>
+  } else if (mode === 'read') {
+    topics.forEach(topic => {
+      console.log(topic.id, id);
+      if (topic.id === id) {
+        content = <Article title={topic.title} body={topic.body}></Article>
+      }
+    });
+  }
 
   function ButtonAdminShortcuts({title, clickEvent}) {
     return (
@@ -53,21 +73,14 @@ function App() {
     window.open("http://www.naver.com");
   }
 
-  const topics = [
-    {id:1, title:'html', body:'html is ...'},
-    {id:2, title:'css', body:'css is ...'},
-    {id:3, title:'javasccript', body:'javascript is ...'}
-  ];
-
   return (
     <div>
-      <Header title="WEB" onChangeMode={
-        function(){
-          alert("Header")
-        }
-      }></Header>
-      <Nav topics={topics} onChangeMode={(id) => {alert(id)}}></Nav>
-      <Article title="Welcom" body="Hello, WEB"></Article>
+      <Header title="WEB" onChangeMode={() => {setMode('welcome')}}></Header>
+      <Nav topics={topics} onChangeMode={(_id) => {
+        setMode('read')
+        setId(_id)
+        }}></Nav>
+        {content}
       <ButtonAdminShortcuts title="네이버" clickEvent={openNaver}/>
   </div>
   );
