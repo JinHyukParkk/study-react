@@ -113,10 +113,17 @@ function App() {
     topics.forEach(topic => {
       if (topic.id === id) {
         content = <Article title={topic.title} body={topic.body}></Article>
-        contextControl = <li><a href={"/update/" + id} onClick={event => {
-          event.preventDefault();
-          setMode('update');
-        }}>update</a></li>
+        contextControl = <>
+          <li><a href={"/update/" + id} onClick={event => {
+            event.preventDefault();
+            setMode('update');
+          }}>update</a></li>
+          <li><input type="button" value="delete" onClick={() => {
+            const newTopics = topics.filter(topic => topic.id !== id);
+            setTopics(newTopics);
+            setMode('welcome');
+          }}></input></li>
+        </>
       }
     });
   } else if (mode === 'create') {
