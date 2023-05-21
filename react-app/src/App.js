@@ -71,6 +71,30 @@ function Create(props) {
   );
 }
 
+function Update(props) {
+  const [title, setTitle] = useState(props.title);
+  const [body, setBody] = useState(props.body);
+  return (
+    <article>
+      <h2>Update</h2>
+      <form onSubmit={event => {
+        event.preventDefault();
+        const title = event.target.title.value;
+        const body = event.target.body.value;
+        props.onUpdate(event.target.title.value, event.target.body.value);
+      }}>
+        <p><input type="text" name="title" placeholder="title" value={title} onChange={event => {
+          setTitle(event.target.value);
+        }}></input></p>
+        <p><textarea name="body" placeholder="body" value={body} onChange={event => {
+          setBody(event.target.value);
+        }}></textarea></p>
+        <p><input type="submit" value="Update"></input></p>
+      </form>
+    </article>
+  );
+}
+
 function App() {
   const [mode, setMode] = useState('welcome');
   const [id, setId] = useState(null);
@@ -82,13 +106,17 @@ function App() {
   ]);
 
   let content = null;
+  let contextControl = null;
   if (mode === 'welcome') {
     content = <Article title="Welcome" body="Hello, WEB"></Article>
   } else if (mode === 'read') {
     topics.forEach(topic => {
-      console.log(topic.id, id);
       if (topic.id === id) {
         content = <Article title={topic.title} body={topic.body}></Article>
+        contextControl = <li><a href={"/update/" + id} onClick={event => {
+          event.preventDefault();
+          setMode('update');
+        }}>update</a></li>
       }
     });
   } else if (mode === 'create') {
@@ -97,8 +125,22 @@ function App() {
       setTopics([...topics, newTopics]);
       setNextId(nextId + 1);
     }}></Create>
+  } else if (mode === 'update') {
+    topics.forEach(topic => {
+      if (topic.id === id) {
+        content = <Update title={topic.title} body={topic.body} onUpdate={(title, body) => {
+          const newTopics = [...topics];
+          newTopics.forEach(topic => {
+            if (topic.id === id) {
+              topic.title = title;
+              topic.body = body;
+            }
+          });
+          setTopics(newTopics);
+        }}></Update>
+      }
+    });
   }
-
   return (
     <div>
       <Header title="WEB" onChangeMode={() => {setMode('welcome')}}></Header>
@@ -107,10 +149,15 @@ function App() {
         setId(_id)
         }}></Nav>
         {content}
-      <a href="/create" onClick={(event) => {
-        event.preventDefault();
-        setMode('create');
-      }}>create</a>
+      <ul>
+        <li><a href="/create" onClick={(event) => {
+          event.preventDefault();
+          setMode('create');
+        }}>create</a>
+        </li>
+
+        {contextControl}
+      </ul>
 
       <RedirectNaver title="네이버" clickEvent={openNaver}/>
   </div>
