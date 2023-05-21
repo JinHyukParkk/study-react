@@ -137,6 +137,7 @@ function App() {
             }
           });
           setTopics(newTopics);
+          setMode('read');
         }}></Update>
       }
     });
