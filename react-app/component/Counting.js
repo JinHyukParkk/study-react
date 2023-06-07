@@ -25,9 +25,26 @@ export default function Counting() {
         countLet = countLet + 1;
     }
 
+    const test = [
+        {key: "state", cnt: count},
+        {key: "ref", cnt: countRef.current}
+    ];
+
+    const [columnInfo, setColumnInfo] = useState(test);
+
     useEffect(() => {
         renderCount.current = renderCount.current + 1;
+    
     });
+
+    // State 배열은 값이 변하면 Render가 된다.
+    // 배열 안에 State 값이 포함되어 있으면 배열 State도 변경시켜줘야 한다.
+    useEffect(() => {
+        setColumnInfo([
+            ...test
+        ])
+    
+    }, [count]);
 
     return (
         <div>
@@ -39,6 +56,18 @@ export default function Counting() {
             <button onClick={increaseCountLet}>Let 올려</button>
 
             <h1>Render Count : {renderCount.current}</h1>
+
+            
+
+            <h1>일반 배열 VS State 배열</h1>
+            <h1>Normal Test : {test[0].cnt} / {test[1].cnt}</h1>
+            <h1>State Table : {columnInfo[0].cnt} / {columnInfo[1].cnt}</h1>
+
+            <button onClick={() => {
+                setColumnInfo([
+                    ...test
+                ])
+            }}>Table Test</button>
         </div>
     );
 }
