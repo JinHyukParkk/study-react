@@ -1,9 +1,10 @@
-import {combineReducers, createStore} from 'redux';
+import {combineReducers } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
 
-let alert초기값 = true;
+let initAlert = true;
 
-function reducer2(state = alert초기값, 액션){
-  if(액션.type === 'alert닫기'){
+function reducer2(state = initAlert, action){
+  if(action.type === 'alert닫기'){
     state = false;
     return state;
   } else{
@@ -11,17 +12,17 @@ function reducer2(state = alert초기값, 액션){
   }
 }
 
-let 초기값 = [
+let initValue = [
   {id: 0, name: '멋진신발', quan : 2},
   {id: 1, name: '멋진신발2', quan : 1}
 ];
 
-function reducer(state = 초기값, 액션){
-  if(액션.type === '수량증가'){
+function reducer(state = initValue, action){
+  if(action.type === '수량증가'){
     let copy = [...state];
     copy[0].quan++;
     return copy
-  } else if(액션.type === '수량감소'){
+  } else if(action.type === '수량감소'){
     let copy = [...state];
     copy[0].quan--;
     return copy
@@ -30,4 +31,4 @@ function reducer(state = 초기값, 액션){
   }
 }
 
-let store = createStore(combineReducers({reducer,reducer2}));
+let store = configureStore(combineReducers({reducer,reducer2}));
